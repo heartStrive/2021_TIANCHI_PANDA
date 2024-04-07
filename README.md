@@ -1,5 +1,6 @@
 # 训练和推理
 训练的pipeline：train.sh
+
 推理的pipeline：test.sh
 
 # 检测算法介绍
