@@ -1,6 +1,6 @@
 # 训练和推理
-训练的pipeline：train.sh
-推理的pipeline：test.sh
+1. 训练的pipeline：train.sh
+2. 推理的pipeline：test.sh
 
 # 检测算法介绍
 1. 使用[YOLOv5l](https://github.com/ultralytics/yolov5)作为目标检测模型，按照"head","visible body","full body","vehicles"四类分别训练四个检测模型。
