@@ -1,3 +1,19 @@
+# 训练和推理
+训练的pipeline：train.sh
+推理的pipeline：test.sh
+
+# 检测算法介绍
+1. 使用[YOLOv5l](https://github.com/ultralytics/yolov5)作为目标检测模型，按照"head","visible body","full body","vehicles"四类分别训练四个检测模型。
+2. 训练过程中将原始图像分别以[1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125]尺度进行缩小，再按照640x640大小，x方向overlap=100，y方向overlap=200进行裁剪。
+3. 每类模型训练24轮，训练过程中使用[YOLOv5l](https://github.com/ultralytics/yolov5)默认学习率，最终选择效果最好的模型。
+4. 测试过程中将原始图像分别以[1.0, 0.5, 0.25, 0.125, 0.0625]尺度进行缩小，再按照2560x2560大小，overlap=0.2进行切分。
+5. 不同尺度的检测结果利用segmentation-and-fusion处理。
+6. 将各尺度检测结果转换到原图像坐标系中，使用[weighted nms](https://github.com/ZFTurbo/Weighted-Boxes-Fusion)进行结果融合。
+
+# 跟踪算法介绍
+1. 训练reid模型
+2. 构建图与成本，使用费用流算法进行数据关联
+
 # 准备数据
 
 1. 首先运行code/data_prepare/format_data.py将数据集按照如下结构重新排布
@@ -151,8 +167,11 @@ pip install faiss-cpu
 pip install gdown
 cd fastreid/evaluation/rank_cylib; make all
 
-7. 运行 **** 进行reid模型进行训练
+7. 运行train/reid/fast-reid/train_net.py进行reid模型训练
 
 # detection feature extraction
 
 8. 运行 code/train/reid/fast-reid/det_feat_extraction.py
+
+# 数据关联
+9. 运行merge_tracklets/association/train_classifier.py进行数据关联
